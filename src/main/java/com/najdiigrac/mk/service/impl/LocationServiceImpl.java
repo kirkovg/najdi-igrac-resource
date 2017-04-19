@@ -31,8 +31,8 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location updateLocation(Long newLocationId, String newName, String newCityName, String newStreetName, String newStreetNumber) {
-        Location location = locationsRepository.findOne(newLocationId);
+    public Location updateLocation(Long locationId, String newName, String newCityName, String newStreetName, String newStreetNumber) {
+        Location location = locationsRepository.findOne(locationId);
         location.name = newName;
         location.city = newCityName;
         location.street = newStreetName;
