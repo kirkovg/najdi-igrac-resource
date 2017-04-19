@@ -1,4 +1,6 @@
-package com.najdiigrac.mk.model;
+package com.najdiigrac.mk.model.jpa;
+
+import com.najdiigrac.mk.model.enums.UserType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +13,9 @@ import java.util.List;
 public class User extends BaseEntity {
 
     public String userName;
+
+    @Enumerated(EnumType.STRING)
+    public UserType userType;
 
     public String password;
 

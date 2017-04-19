@@ -1,7 +1,11 @@
-package com.najdiigrac.mk.model;
+package com.najdiigrac.mk.model.jpa;
+
+import com.najdiigrac.mk.model.enums.SportType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by bogdan on 19.4.2017.
@@ -17,11 +21,11 @@ public class Event extends BaseEntity {
     @ManyToOne
     public Location location;
 
-    @ManyToOne
-    public String sport;
+    @Enumerated(EnumType.STRING)
+    public SportType sport;
 
-    @ManyToOne
-    public User creator;
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<User> admins;
 
-
+    public String description;
 }

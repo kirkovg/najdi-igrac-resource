@@ -1,4 +1,4 @@
-package com.najdiigrac.mk.model;
+package com.najdiigrac.mk.model.jpa;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

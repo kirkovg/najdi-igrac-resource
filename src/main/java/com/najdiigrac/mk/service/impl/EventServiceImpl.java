@@ -1,12 +1,14 @@
 package com.najdiigrac.mk.service.impl;
 
+import ch.qos.logback.classic.Logger;
 import com.najdiigrac.mk.model.enums.SportType;
 import com.najdiigrac.mk.model.jpa.Event;
 import com.najdiigrac.mk.model.jpa.User;
 import com.najdiigrac.mk.persistence.EventsRepository;
 import com.najdiigrac.mk.persistence.LocationsRepository;
 import com.najdiigrac.mk.persistence.UsersRepository;
-import com.najdiigrac.mk.service.EventServiceHelper;
+import com.najdiigrac.mk.service.EventService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +20,16 @@ import java.util.List;
  * Created by bogda on 19.4.2017.
  */
 @Service
-public class EventServiceHelperImpl implements EventServiceHelper {
+public class EventServiceImpl implements EventService {
 
     private EventsRepository eventsRepository;
     private UsersRepository usersRepository;
     private LocationsRepository locationsRepository;
 
+    static Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
+
     @Autowired
-    private EventServiceHelperImpl(EventsRepository eventsRepository,UsersRepository usersRepository, LocationsRepository locationsRepository){
+    private EventServiceImpl(EventsRepository eventsRepository, UsersRepository usersRepository, LocationsRepository locationsRepository){
         this.eventsRepository = eventsRepository;
         this.usersRepository = usersRepository;
         this.locationsRepository = locationsRepository;
@@ -43,6 +47,7 @@ public class EventServiceHelperImpl implements EventServiceHelper {
         event.sport = sport;
         event.location = locationsRepository.findOne(locationId);
         event.dateTime = dateTime;
+        logger.debug(dateTime.toString());
 
         return eventsRepository.save(event);
     }

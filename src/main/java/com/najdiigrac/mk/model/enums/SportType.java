@@ -1,7 +1,9 @@
-package com.najdiigrac.mk.model.
+package com.najdiigrac.mk.model.enums;
 
 
 public enum SportType{
-
+    BASKETBALL,
+    FOOTBAL,
+    VOLEYBALL
 
 }
