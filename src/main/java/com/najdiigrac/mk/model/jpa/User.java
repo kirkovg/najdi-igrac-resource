@@ -24,6 +24,4 @@ public class User extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     public List<User> friends;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    public List<Event> events;
 }

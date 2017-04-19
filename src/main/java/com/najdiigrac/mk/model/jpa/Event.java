@@ -27,5 +27,8 @@ public class Event extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     public List<User> admins;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    public List<User> participants;
+
     public String description;
 }
