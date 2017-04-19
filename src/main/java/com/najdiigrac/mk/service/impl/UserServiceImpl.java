@@ -5,7 +5,6 @@ import com.najdiigrac.mk.model.jpa.User;
 import com.najdiigrac.mk.persistence.UsersRepository;
 import com.najdiigrac.mk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,20 +15,16 @@ public class UserServiceImpl implements UserService {
 
     private UsersRepository usersRepository;
 
-    private BCryptPasswordEncoder passwordEncoder;
-
-
     @Autowired
-    private UserServiceImpl(UsersRepository usersRepository,BCryptPasswordEncoder bCryptPasswordEncoder){
+    private UserServiceImpl(UsersRepository usersRepository){
         this.usersRepository = usersRepository;
-        this.passwordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public User createAdminUser(String userName, String password) {
         User user = new User();
         user.userName = userName;
-        user.password = encryptPassword(password);
+        user.password = (password);
         user.userType = UserType.ROLE_ADMIN;
         user.email = "";
         return usersRepository.save(user);
@@ -40,7 +35,4 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    private String encryptPassword(String password) {
-        return passwordEncoder.encode(password);
-    }
 }

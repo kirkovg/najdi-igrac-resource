@@ -1,3 +1,4 @@
+/*
 package com.najdiigrac.mk.config;
 
 import org.springframework.context.annotation.Bean;
@@ -7,9 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+*/
 /**
  * Created by bogda on 19.4.2017.
- */
+ *//*
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -24,3 +27,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return encoder;
     }
 }
+*/
