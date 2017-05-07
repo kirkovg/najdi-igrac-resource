@@ -1,9 +1,10 @@
 package com.najdiigrac.mk.model.jpa;
 
 import com.najdiigrac.mk.model.enums.SportType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,10 +25,11 @@ public class Event extends BaseEntity {
     @Enumerated(EnumType.STRING)
     public SportType sport;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    public List<User> admins;
+    @ManyToOne
+    public User admin;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany/*(fetch = FetchType.EAGER)*/
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<User> participants;
 
     public String description;

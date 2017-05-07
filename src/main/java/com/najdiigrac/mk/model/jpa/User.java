@@ -1,6 +1,8 @@
 package com.najdiigrac.mk.model.jpa;
 
 import com.najdiigrac.mk.model.enums.UserType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,7 +23,10 @@ public class User extends BaseEntity {
 
     public String email;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    public List<User> friends;
+    public String telephone;
+
+    @ManyToMany/*(fetch = FetchType.LAZY)*/
+    @LazyCollection(LazyCollectionOption.FALSE)
+    public List<User> followers;
 
 }
