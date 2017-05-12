@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Dj Ux on 12-May-17.
  */
 @RestController
-@RequestMapping(value = "/locations", produces = "application/json")
+@RequestMapping(value = "/api/locations", produces = "application/json")
 public class LocationController {
 
     private LocationService locationService;
