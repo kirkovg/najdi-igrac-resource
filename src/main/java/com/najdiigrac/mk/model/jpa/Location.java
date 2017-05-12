@@ -1,5 +1,7 @@
 package com.najdiigrac.mk.model.jpa;
 
+import org.hibernate.search.annotations.*;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,6 +12,9 @@ import javax.persistence.Table;
 @Table(name = "locations")
 public class Location extends BaseEntity {
 
+    @Field(index = Index.YES, store = Store.NO, analyze = Analyze.YES)
+    @Analyzer(definition = "najdiIgracAnalyser")
+    @Boost(1f)
     public String name;
 
     public String city;

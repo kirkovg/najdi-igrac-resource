@@ -3,6 +3,7 @@ package com.najdiigrac.mk.model.jpa;
 import com.najdiigrac.mk.model.enums.UserType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.List;
 @Table(name = "users")
 public class User extends BaseEntity {
 
+    @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES)
+    @Analyzer(definition = "najdiIgracAnalyser")
+    @Boost(1.5f)
     public String userName;
 
     @Enumerated(EnumType.STRING)

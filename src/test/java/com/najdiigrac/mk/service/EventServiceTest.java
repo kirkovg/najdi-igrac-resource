@@ -51,6 +51,7 @@ public class EventServiceTest {
         String str = "1986-04-08 12:30";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+        System.out.println(dateTime.toString());
         event = eventService.createEvent(1l,"Fudbal u shkolski","Blabla", SportType.FOOTBALL,location.id,dateTime);
         Assert.assertNotNull(event);
         Assert.assertEquals(event.name,"Fudbal u shkolski");

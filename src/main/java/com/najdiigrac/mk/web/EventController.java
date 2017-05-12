@@ -1,10 +1,14 @@
 package com.najdiigrac.mk.web;
 
+import com.najdiigrac.mk.model.enums.SportType;
 import com.najdiigrac.mk.model.jpa.Event;
 import com.najdiigrac.mk.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -12,7 +16,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping(value = "/event",  produces = "application/json")
+@RequestMapping(value = "/events", produces = "application/json")
 public class EventController {
 
     private EventService eventService;
@@ -22,11 +26,18 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @RequestMapping(value = "{/adminId}", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseBody
-    public Event save(@RequestBody Event event, @PathVariable Long adminId) {
+    public List<Event> findAll() {
+        return eventService.findAll();
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseBody
+    public Event save(@RequestBody Event event) {
+
         return eventService.createEvent(
-                adminId,
+                event.admin.id,
                 event.name,
                 event.description,
                 event.sport,
@@ -35,10 +46,5 @@ public class EventController {
         );
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    //@ResponseBody
-    public List<Event> findAll() {
-        List<Event> events = eventService.findAll();
-        return events;
-    }
+
 }
