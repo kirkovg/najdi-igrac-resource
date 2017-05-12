@@ -1,7 +1,6 @@
 package com.najdiigrac.mk.service;
 
 import com.najdiigrac.mk.model.jpa.Event;
-import com.najdiigrac.mk.model.jpa.FriendRequest;
 import com.najdiigrac.mk.model.jpa.User;
 
 import java.util.List;

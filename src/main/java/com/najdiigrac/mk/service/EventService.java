@@ -41,4 +41,6 @@ public interface EventService {
     Event addParticipant(Long eventId, Long participantId);
 
     Event removeParticipant(Long eventId, Long participantId);
+
+    List<Event> findAll();
 }
