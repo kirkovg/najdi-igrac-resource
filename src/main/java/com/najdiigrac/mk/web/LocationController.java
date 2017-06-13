@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by Dj Ux on 12-May-17.
  */
+
 @RestController
 @RequestMapping(value = "/api/locations", produces = "application/json")
 public class LocationController {

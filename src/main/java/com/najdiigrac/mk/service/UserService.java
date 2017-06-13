@@ -25,4 +25,7 @@ public interface UserService {
 
     List<Event> findEventsForUser(Long userId);
 
+    User findById(Long userId);
+
+    List<User> findAll();
 }

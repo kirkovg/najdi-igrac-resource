@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by Win 8 on 12.05.2017.
  */
+
 @RestController
 @RequestMapping(value = "/api/search")
 public class SearchController {

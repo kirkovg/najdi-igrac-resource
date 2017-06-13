@@ -7,6 +7,7 @@ import com.najdiigrac.mk.persistence.EventsRepository;
 import com.najdiigrac.mk.persistence.UsersRepository;
 import com.najdiigrac.mk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,18 +22,22 @@ public class UserServiceImpl implements UserService {
 
     private EventsRepository eventsRepository;
 
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
     private UserServiceImpl(UsersRepository usersRepository,
-                            EventsRepository eventsRepository){
+                            EventsRepository eventsRepository,
+                            BCryptPasswordEncoder bCryptPasswordEncoder){
         this.usersRepository = usersRepository;
         this.eventsRepository = eventsRepository;
+        this.passwordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public User createAdminUser(String userName, String password, String email, String telephone){
         User user = new User();
         user.userName = userName;
-        user.password = password;
+        user.password = encryptPassword(password);
         user.userType = UserType.ROLE_ADMIN;
         user.email = email;
         user.telephone = telephone;
@@ -43,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public User createUser(String userName, String password, String email,String telephone){
         User user = new User();
         user.userName = userName;
-        user.password = password;
+        user.password = encryptPassword(password);
         user.userType = UserType.ROLE_USER;
         user.email = email;
         user.telephone = telephone;
@@ -77,6 +82,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(Long userId) {
+        return usersRepository.findOne(userId);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return (List<User>) usersRepository.findAll();
+    }
+
+
+    @Override
     public User addFollower(Long userId, Long followerId) {
         User user = usersRepository.findOne(userId);
         User follower = usersRepository.findOne(followerId);
@@ -94,5 +110,10 @@ public class UserServiceImpl implements UserService {
         followers.remove(follower);
         user.followers = followers;
         return usersRepository.save(user);
+    }
+
+
+    private String encryptPassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }
