@@ -33,4 +33,15 @@ public class User extends BaseEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<User> followers;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", userType=" + userType +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", followers=" + followers +
+                '}';
+    }
 }

@@ -28,4 +28,6 @@ public interface UserService {
     User findById(Long userId);
 
     List<User> findAll();
+
+    User findByUserName(String username);
 }

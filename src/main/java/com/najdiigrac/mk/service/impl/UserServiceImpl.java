@@ -91,6 +91,11 @@ public class UserServiceImpl implements UserService {
         return (List<User>) usersRepository.findAll();
     }
 
+    @Override
+    public User findByUserName(String username) {
+        return usersRepository.findByUserName(username);
+    }
+
 
     @Override
     public User addFollower(Long userId, Long followerId) {

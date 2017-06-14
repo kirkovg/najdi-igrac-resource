@@ -6,9 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by Win 8 on 11.06.2017.
- */
+
 @Component
 public class CORSFilter implements Filter{
     @Override
