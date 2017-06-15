@@ -87,7 +87,7 @@ public class EventServiceTest {
     @Test
     public void findParticipantsForEvent() {
         User user1 = userService.createAdminUser("Bogdan","123",null,null);
-        User user2 = userService.createUser("Gjorgji","1234",null,null);
+        User user2 = userService.createUser("Gjorgji","1234",null,null,null);
         Location location = locationService.createLocation("Shkolski","Skopje","Orce Nikolov","19");
         String str = "1986-04-08 14:30";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

@@ -31,10 +31,17 @@ public class User extends BaseEntity {
 
     public String telephone;
 
+    public String description;
+
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType"})
+    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType","following","description"})
     /*@LazyCollection(LazyCollectionOption.FALSE)*/
     public List<User> followers;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType", "following","description"})
+    /*@LazyCollection(LazyCollectionOption.FALSE)*/
+    public List<User> following;
 
     @Override
     public String toString() {

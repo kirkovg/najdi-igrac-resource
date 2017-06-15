@@ -43,11 +43,11 @@ public class Event extends BaseEntity {
 
     @ManyToOne
     @IndexedEmbedded
-    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType"})
+    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType", "following", "description"})
     public User admin;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType"})
+    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType", "following", "description"})
     /*@LazyCollection(LazyCollectionOption.FALSE)*/
     @IndexedEmbedded
     public List<User> participants = new ArrayList<>();

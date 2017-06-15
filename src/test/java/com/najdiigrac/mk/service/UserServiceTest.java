@@ -46,8 +46,8 @@ public class UserServiceTest {
 
     @Test
     public void findUserFollowers() {
-        User user1 = userService.createUser("jas","nesto",null,null);
-        User user2 = userService.createUser("jas2","nesto2",null,null);
+        User user1 = userService.createUser("jas","nesto",null,null,null);
+        User user2 = userService.createUser("jas2","nesto2",null,null,null);
         userService.addFollower(user1.id,user2.id);
 
         List<User> followers = userService.findUserFollowers(user1.id);
@@ -57,9 +57,9 @@ public class UserServiceTest {
 
     @Test
     public void findEventsForUser() {
-        User user1 = userService.createUser("jas","nesto",null,null);
+        User user1 = userService.createUser("jas","nesto",null,null,null);
 
-        User user2 = userService.createUser("jas2","nesto2",null,null);
+        User user2 = userService.createUser("jas2","nesto2",null,null,null);
         Event event1 = eventService.createEvent(user1.id,"Fudbal u shkolski","Blabla", SportType.FOOTBALL,null,null);
         Event event2 = eventService.createEvent(user1.id,"Fudbal u shkolski","Blabla", SportType.FOOTBALL,null,null);
 

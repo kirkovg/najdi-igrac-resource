@@ -28,14 +28,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserServiceImpl(UsersRepository usersRepository,
                             EventsRepository eventsRepository,
-                            BCryptPasswordEncoder bCryptPasswordEncoder){
+                            BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.usersRepository = usersRepository;
         this.eventsRepository = eventsRepository;
         this.passwordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
-    public User createAdminUser(String userName, String password, String email, String telephone){
+    public User createAdminUser(String userName, String password, String email, String telephone) {
         User user = new User();
         user.userName = userName;
         user.password = encryptPassword(password);
@@ -46,22 +46,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(String userName, String password, String email,String telephone){
+    public User createUser(String userName, String password, String description, String email, String telephone) {
         User user = new User();
         user.userName = userName;
         user.password = encryptPassword(password);
         user.userType = UserType.ROLE_USER;
         user.email = email;
+        user.description = description;
         user.telephone = telephone;
         return usersRepository.save(user);
     }
 
     @Override
-    public User updateUser(Long userId, String userName, String password, String email, String telephone) {
+    public User updateUser(Long userId, String userName, String password, String description, String email, String telephone) {
         User user = usersRepository.findOne(userId);
         user.userName = userName;
         user.password = password;
         user.email = email;
+        user.description = description;
         user.telephone = telephone;
         return usersRepository.save(user);
     }
@@ -117,8 +119,6 @@ public class UserServiceImpl implements UserService {
         user.followers = followers;
         return usersRepository.save(user);
     }
-
-
 
 
     private String encryptPassword(String password) {

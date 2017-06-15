@@ -1,6 +1,7 @@
 package com.najdiigrac.mk.web;
 
 
+import com.najdiigrac.mk.model.jpa.Event;
 import com.najdiigrac.mk.model.jpa.User;
 import com.najdiigrac.mk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,12 @@ public class UserController {
 
     @RequestMapping(value = {"/save"}, method = RequestMethod.POST)
     public void save(@RequestBody User user) {
-        userService.createUser(user.userName, user.password, user.email, user.telephone);
+        userService.createUser(user.userName, user.password, user.description, user.email, user.telephone);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable Long id, @RequestBody User user) {
-        userService.updateUser(id, user.userName, user.password, user.email, user.telephone);
+        userService.updateUser(id, user.userName, user.password, user.description, user.email, user.telephone);
     }
 
     @RequestMapping(value = "/addFollower/{id}", method = RequestMethod.POST)
@@ -58,5 +59,10 @@ public class UserController {
         return userService.findByUserName(userName);
     }
 
+    @RequestMapping(value = {"/findEventsForUser"}, method = RequestMethod.GET)
+    public List<Event> findEventsForUser(@RequestParam String userName){
+        User user = userService.findByUserName(userName);
+        return userService.findEventsForUser(user.id);
+    }
 
 }
