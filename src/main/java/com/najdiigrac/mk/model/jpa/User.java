@@ -1,5 +1,6 @@
 package com.najdiigrac.mk.model.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.najdiigrac.mk.model.enums.UserType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"password", "userType"})
 public class User extends BaseEntity {
 
     @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES)
@@ -29,8 +31,9 @@ public class User extends BaseEntity {
 
     public String telephone;
 
-    @ManyToMany/*(fetch = FetchType.LAZY)*/
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType"})
+    /*@LazyCollection(LazyCollectionOption.FALSE)*/
     public List<User> followers;
 
     @Override

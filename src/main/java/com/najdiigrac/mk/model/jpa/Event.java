@@ -1,5 +1,6 @@
 package com.najdiigrac.mk.model.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.najdiigrac.mk.model.enums.SportType;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
@@ -42,10 +43,12 @@ public class Event extends BaseEntity {
 
     @ManyToOne
     @IndexedEmbedded
+    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType"})
     public User admin;
 
-    @ManyToMany/*(fetch = FetchType.EAGER)*/
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType"})
+    /*@LazyCollection(LazyCollectionOption.FALSE)*/
     @IndexedEmbedded
     public List<User> participants = new ArrayList<>();
 
