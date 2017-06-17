@@ -11,11 +11,11 @@ import java.util.List;
 public interface UserService {
     User createAdminUser(String userName, String password, String email, String telephone);
 
-    User createUser(String userName, String description, String password, String email, String telephone);
+    User createUser(String userName, String password, String description, String email, String telephone);
 
     void removeUser(Long userId);
 
-    User updateUser(Long userId, String description, String userName, String password, String email, String telephone);
+    User updateUser(Long userId, String userName, String description, String email, String telephone);
 
     User removeFollower(Long userId, Long friendId);
 

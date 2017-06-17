@@ -1,6 +1,7 @@
 package com.najdiigrac.mk.service;
 
 import com.najdiigrac.mk.model.jpa.Event;
+import com.najdiigrac.mk.model.jpa.User;
 
 import java.util.List;
 
@@ -9,4 +10,6 @@ import java.util.List;
  */
 public interface SearchService {
     List<Event> searchEvent(String query);
+
+    List<User> searchUsers(String query);
 }

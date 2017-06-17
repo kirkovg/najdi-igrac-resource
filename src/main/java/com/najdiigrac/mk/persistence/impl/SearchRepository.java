@@ -1,5 +1,6 @@
 package com.najdiigrac.mk.persistence.impl;
 
+import com.najdiigrac.mk.model.jpa.Event;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;

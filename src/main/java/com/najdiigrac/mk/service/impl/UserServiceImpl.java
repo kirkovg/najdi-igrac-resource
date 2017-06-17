@@ -58,10 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long userId, String userName, String password, String description, String email, String telephone) {
+    public User updateUser(Long userId, String userName, String description, String email, String telephone) {
         User user = usersRepository.findOne(userId);
         user.userName = userName;
-        user.password = password;
         user.email = email;
         user.description = description;
         user.telephone = telephone;
@@ -104,9 +103,16 @@ public class UserServiceImpl implements UserService {
     public User addFollower(Long userId, Long followerId) {
         User user = usersRepository.findOne(userId);
         User follower = usersRepository.findOne(followerId);
-        List<User> followers = usersRepository.findOne(userId).followers;
-        followers.add(follower);
-        user.followers = followers;
+
+        List<User> followersForUser = usersRepository.findOne(userId).followers;
+        followersForUser.add(follower);
+        user.followers = followersForUser;
+
+        List<User> followingListOfFollower = follower.following;
+        followingListOfFollower.add(user);
+        follower.following = followingListOfFollower;
+
+        usersRepository.save(follower);
         return usersRepository.save(user);
     }
 
@@ -114,11 +120,19 @@ public class UserServiceImpl implements UserService {
     public User removeFollower(Long userId, Long followerId) {
         User user = usersRepository.findOne(userId);
         User follower = usersRepository.findOne(followerId);
+
         List<User> followers = usersRepository.findOne(userId).followers;
         followers.remove(follower);
         user.followers = followers;
+
+        List<User> followingListOfFollower = follower.following;
+        followingListOfFollower.remove(user);
+        follower.following = followingListOfFollower;
+
         return usersRepository.save(user);
     }
+
+
 
 
     private String encryptPassword(String password) {

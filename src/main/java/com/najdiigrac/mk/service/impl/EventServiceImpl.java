@@ -10,6 +10,7 @@ import com.najdiigrac.mk.persistence.UsersRepository;
 import com.najdiigrac.mk.service.EventService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -112,5 +113,14 @@ public class EventServiceImpl implements EventService {
         return (List<Event>) eventsRepository.findAll();
     }
 
+    @Override
+    public List<Event> findUpcomingEvents() {
+        return eventsRepository.findAllByOrderByDateTimeDesc(new PageRequest(0,10)).getContent();
+    }
+
+    @Override
+    public Event findById(Long eventId) {
+        return eventsRepository.findOne(eventId);
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.najdiigrac.mk.web;
 
 import com.najdiigrac.mk.model.jpa.Event;
+import com.najdiigrac.mk.model.jpa.User;
 import com.najdiigrac.mk.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,17 @@ public class SearchController {
         this.searchService = searchService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value={"/searchEvents"},method = RequestMethod.GET)
     @ResponseBody
-    public List<Event> search(@RequestParam String query) {
+    public List<Event> searchEvents(@RequestParam String query) {
         List<Event> events = searchService.searchEvent(query);
+        return events;
+    }
+
+    @RequestMapping(value={"/searchUsers"}, method = RequestMethod.GET)
+    @ResponseBody
+    public List<User> searchUsers(@RequestParam String query) {
+        List<User> events = searchService.searchUsers(query);
         return events;
     }
 

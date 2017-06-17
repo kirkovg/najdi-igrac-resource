@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 
@@ -30,22 +31,27 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @RequestMapping(value = {"/save"}, method = RequestMethod.POST)
-    public void save(@RequestBody User user) {
-        userService.createUser(user.userName, user.password, user.description, user.email, user.telephone);
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable Long id, @RequestBody User user) {
-        userService.updateUser(id, user.userName, user.password, user.description, user.email, user.telephone);
+    public User update(@PathVariable Long id, @RequestBody User user) {
+        return userService.updateUser(id, user.userName, user.description, user.email, user.telephone);
     }
 
-    @RequestMapping(value = "/addFollower/{id}", method = RequestMethod.POST)
-    public void addFollower(@PathVariable Long id) {
+    @RequestMapping(value = "/follow/{id}", method = RequestMethod.POST)
+    public void follow(@PathVariable Long id) {
         //get the current authenticated user
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentAuthenticatedUser = userService.findByUserName(userDetails.getUsername());
-        userService.addFollower(currentAuthenticatedUser.id, id);
+        userService.addFollower(id, currentAuthenticatedUser.id);
+        //System.out.println(currentAuthenticatedUser);
+    }
+
+
+    @RequestMapping(value = "/unfollow/{id}", method = RequestMethod.POST)
+    public void unfollow(@PathVariable Long id) {
+        //get the current authenticated user
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentAuthenticatedUser = userService.findByUserName(userDetails.getUsername());
+        userService.removeFollower(id, currentAuthenticatedUser.id);
         //System.out.println(currentAuthenticatedUser);
     }
 

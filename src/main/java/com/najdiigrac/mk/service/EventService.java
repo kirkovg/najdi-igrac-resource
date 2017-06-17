@@ -43,4 +43,8 @@ public interface EventService {
     Event removeParticipant(Long eventId, Long participantId);
 
     List<Event> findAll();
+
+    List<Event> findUpcomingEvents();
+
+    Event findById(Long eventId);
 }

@@ -1,6 +1,7 @@
 package com.najdiigrac.mk.service.impl;
 
 import com.najdiigrac.mk.model.jpa.Event;
+import com.najdiigrac.mk.model.jpa.User;
 import com.najdiigrac.mk.persistence.impl.SearchRepository;
 import com.najdiigrac.mk.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,10 @@ public class SearchServiceImpl implements SearchService{
     public List<Event> searchEvent(String query) {
         return searchRepository.searchPhrase(Event.class,query, "name","description",
                 "location.name","admin.userName","participants.userName");
+    }
+
+    @Override
+    public List<User> searchUsers(String query) {
+        return searchRepository.searchPhrase(User.class,query,"userName");
     }
 }

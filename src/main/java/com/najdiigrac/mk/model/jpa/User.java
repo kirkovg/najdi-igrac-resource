@@ -1,7 +1,10 @@
 package com.najdiigrac.mk.model.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.najdiigrac.mk.model.enums.UserType;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.search.annotations.*;
@@ -14,7 +17,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({"password", "userType"})
+@Indexed
 public class User extends BaseEntity {
 
     @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.YES)
@@ -25,6 +28,10 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     public UserType userType;
 
+    /*Za da mozis da postnis user i da go zacuvas passwordot
+    * a ko ke zemas od baza da ne go pokazuvas
+    * */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String password;
 
     public String email;
@@ -34,12 +41,29 @@ public class User extends BaseEntity {
     public String description;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType","following","description"})
+    @JsonIgnoreProperties(
+            value = {"password",
+                    "email",
+                    "telephone",
+                    "followers",
+                    "userType",
+                    "following",
+                    "description"},
+            allowSetters = true)
+    // allowSetters za da mojs da deserializiras od fronteind
     /*@LazyCollection(LazyCollectionOption.FALSE)*/
     public List<User> followers;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"password", "email", "telephone", "followers", "userType", "following","description"})
+    @JsonIgnoreProperties(
+                  value = {"password",
+                    "email",
+                    "telephone",
+                    "followers",
+                    "userType",
+                    "following",
+                    "description"},
+            allowSetters = true)
     /*@LazyCollection(LazyCollectionOption.FALSE)*/
     public List<User> following;
 

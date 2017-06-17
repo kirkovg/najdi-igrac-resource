@@ -32,6 +32,12 @@ public class EventController {
         return eventService.findAll();
     }
 
+    @RequestMapping(value = "/upcoming", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Event> findUpcomingEvents() {
+        return eventService.findUpcomingEvents();
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public Event save(@RequestBody Event event) {
@@ -80,5 +86,10 @@ public class EventController {
     @ResponseBody
     public List<User> findParticipants(@RequestBody Event event) {
         return eventService.findParticipantsForEvent(event.id);
+    }
+
+    @RequestMapping(value = "/{eventId}", method = RequestMethod.GET)
+    public Event findById(@PathVariable Long eventId){
+        return eventService.findById(eventId);
     }
 }
