@@ -15,4 +15,6 @@ public interface ParticipateRequestService {
     List<ParticipateRequest> getRequestsForEvent(Long eventId);
 
     void removeRequest(Long requestId);
+
+    List<ParticipateRequest> getRequestsSentByUser(Long userId);
 }

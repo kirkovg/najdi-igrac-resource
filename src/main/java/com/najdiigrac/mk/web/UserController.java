@@ -42,7 +42,6 @@ public class UserController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentAuthenticatedUser = userService.findByUserName(userDetails.getUsername());
         userService.addFollower(id, currentAuthenticatedUser.id);
-        //System.out.println(currentAuthenticatedUser);
     }
 
 
@@ -52,7 +51,6 @@ public class UserController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentAuthenticatedUser = userService.findByUserName(userDetails.getUsername());
         userService.removeFollower(id, currentAuthenticatedUser.id);
-        //System.out.println(currentAuthenticatedUser);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

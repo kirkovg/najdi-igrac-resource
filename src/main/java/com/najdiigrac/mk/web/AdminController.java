@@ -24,21 +24,9 @@ public class AdminController {
         userService.createAdminUser(user.userName, user.password, user.email, user.telephone);
     }
 
-
     @RequestMapping(value = "/deleteUser/{id}", method = RequestMethod.DELETE)
     public void remove(@PathVariable Long id) {
         userService.removeUser(id);
-    }
-
-
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String hello() {
-        return "hello from admin";
-    }
-
-    @RequestMapping(value = "/someOtherGet", method = RequestMethod.GET)
-    public String hello2() {
-        return "hello from someOtherGet";
     }
 
 }

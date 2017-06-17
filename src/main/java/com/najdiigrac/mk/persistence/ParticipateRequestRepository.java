@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface ParticipateRequestRepository extends CrudRepository<ParticipateRequest,Long> {
     List<ParticipateRequest> findByEventId(Long eventId);
+
+    List<ParticipateRequest> findByFromId(Long fromId);
 }

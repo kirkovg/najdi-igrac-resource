@@ -25,5 +25,7 @@ public interface LocationService {
 
     void removeLocation(Long locationId);
 
+    Location findLocationByName(String name);
+
     List<Location> findAllLocations();
 }

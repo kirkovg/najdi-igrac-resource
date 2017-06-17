@@ -56,4 +56,9 @@ public class ParticipateRequestImpl implements ParticipateRequestService {
     public void removeRequest(Long requestId) {
         participateRequestRepository.delete(requestId);
     }
+
+    @Override
+    public List<ParticipateRequest> getRequestsSentByUser(Long userId) {
+        return participateRequestRepository.findByFromId(userId);
+    }
 }

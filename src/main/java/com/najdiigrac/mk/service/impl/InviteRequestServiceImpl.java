@@ -52,8 +52,6 @@ public class InviteRequestServiceImpl implements InviteRequestService {
         inviteRequest.isAccepted = false;
         inviteRequest.message = "I'm inviting you for " + inviteRequest.event.name + " event!";
         inviteRequest = inviteRequestRepository.save(inviteRequest);
-        /*if(inviteRequest!=null)
-        publisher.publishEvent(new InviteRequestEvent(inviteRequest));*/
 
         return inviteRequest;
     }
@@ -69,10 +67,4 @@ public class InviteRequestServiceImpl implements InviteRequestService {
     }
 
 
-    /*@EventListener(InviteRequestEvent.class)
-    public void onInviteRequest(InviteRequestEvent inviteRequest){
-        InviteRequest inv = ((InviteRequest)inviteRequest.getSource());
-
-        System.out.print("to: " +inv.to.userName + "from: " + inv.from.userName + " " + inv.message);
-    }*/
 }

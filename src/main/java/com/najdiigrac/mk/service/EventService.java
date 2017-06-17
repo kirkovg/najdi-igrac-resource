@@ -44,7 +44,13 @@ public interface EventService {
 
     List<Event> findAll();
 
-    List<Event> findUpcomingEvents();
+    List<Event> findUpcomingEvents(int pageNr);
 
     Event findById(Long eventId);
+
+    List<Event> findEventsBySport(SportType sport,int pageNr);
+
+    Long count();
+
+    Long countBySport(SportType sport);
 }

@@ -23,9 +23,4 @@ public class RegisterController {
         System.out.println(user);
         userService.createUser(user.userName, user.password, user.description, user.email, user.telephone);
     }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String hello() {
-        return "Hello from register";
-    }
 }

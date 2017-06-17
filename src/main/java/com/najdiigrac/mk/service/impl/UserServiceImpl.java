@@ -132,9 +132,6 @@ public class UserServiceImpl implements UserService {
         return usersRepository.save(user);
     }
 
-
-
-
     private String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }

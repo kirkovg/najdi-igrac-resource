@@ -114,13 +114,27 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findUpcomingEvents() {
-        return eventsRepository.findAllByOrderByDateTimeDesc(new PageRequest(0,10)).getContent();
-    }
-
-    @Override
     public Event findById(Long eventId) {
         return eventsRepository.findOne(eventId);
     }
 
+    @Override
+    public List<Event> findUpcomingEvents(int pageNr) {
+        return eventsRepository.findAllByOrderByDateTimeDesc(new PageRequest(pageNr,2)).getContent();
+    }
+
+    @Override
+    public List<Event> findEventsBySport(SportType sport,int pageNr) {
+        return eventsRepository.findBySportOrderByDateTimeDesc(sport,new PageRequest(pageNr,2)).getContent();
+    }
+
+    @Override
+    public Long count() {
+        return eventsRepository.count();
+    }
+
+    @Override
+    public Long countBySport(SportType sport) {
+        return eventsRepository.countBySport(sport);
+    }
 }

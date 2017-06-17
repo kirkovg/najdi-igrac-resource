@@ -1,10 +1,16 @@
 package com.najdiigrac.mk.web;
 
+import com.najdiigrac.mk.model.enums.SportType;
 import com.najdiigrac.mk.model.jpa.Event;
+import com.najdiigrac.mk.model.jpa.ParticipateRequest;
 import com.najdiigrac.mk.model.jpa.User;
 import com.najdiigrac.mk.service.EventService;
+import com.najdiigrac.mk.service.LocationService;
+import com.najdiigrac.mk.service.ParticipateRequestService;
 import com.najdiigrac.mk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +25,18 @@ public class EventController {
 
     private EventService eventService;
     private UserService userService;
+    private LocationService locationService;
+    private ParticipateRequestService participateRequestService;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService) {
+    public EventController(EventService eventService,
+                           UserService userService,
+                           LocationService locationService,
+                           ParticipateRequestService participateRequestService) {
         this.eventService = eventService;
         this.userService = userService;
+        this.participateRequestService = participateRequestService;
+        this.locationService = locationService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -34,14 +47,40 @@ public class EventController {
 
     @RequestMapping(value = "/upcoming", method = RequestMethod.GET)
     @ResponseBody
-    public List<Event> findUpcomingEvents() {
-        return eventService.findUpcomingEvents();
+    public List<Event> findUpcomingEvents(@RequestParam int pageNr) {
+        return eventService.findUpcomingEvents(pageNr);
+    }
+
+    @RequestMapping(value = "/upcoming/category", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Event> findBySport(@RequestParam String sport, @RequestParam int pageNr) {
+        SportType sportType = SportType.valueOf(sport);
+        return eventService.findEventsBySport(sportType, pageNr);
+    }
+
+    @RequestMapping(value = "/upcoming/count", method = RequestMethod.GET)
+    public Long countEvents() {
+        return eventService.count();
+    }
+
+    @RequestMapping(value = "/upcoming/category/count", method = RequestMethod.GET)
+    public Long countEventsBySport(@RequestParam String sport) {
+        SportType sportType = SportType.valueOf(sport);
+        return eventService.countBySport(sportType);
+    }
+
+    @RequestMapping(value = "/participatingRequests",method = RequestMethod.GET)
+    public List<ParticipateRequest> findSentParticipatingRequests(@RequestParam String userName){
+        User user = userService.findByUserName(userName);
+        return participateRequestService.getRequestsSentByUser(user.id);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public Event save(@RequestBody Event event) {
 
+        event.location = locationService.findLocationByName(event.location.name);
+        event.admin = userService.findByUserName(event.admin.userName);
         return eventService.createEvent(
                 event.admin.id,
                 event.name,
@@ -70,10 +109,13 @@ public class EventController {
         );
     }
 
-    @RequestMapping(value = "/addParticipant/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/participate/{eventId}", method = RequestMethod.POST)
     @ResponseBody
-    public Event addParticipant(@RequestBody Event event, @PathVariable Long userId) {
-        return eventService.addParticipant(event.id, userId);
+    public ParticipateRequest sendParticipateRequest(@PathVariable Long eventId) {
+        //get the current authenticated user
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentAuthenticatedUser = userService.findByUserName(userDetails.getUsername());
+        return participateRequestService.participate(currentAuthenticatedUser.id, eventId);
     }
 
     @RequestMapping(value = "/removeParticipant/{userId}", method = RequestMethod.DELETE)
@@ -89,7 +131,7 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.GET)
-    public Event findById(@PathVariable Long eventId){
+    public Event findById(@PathVariable Long eventId) {
         return eventService.findById(eventId);
     }
 }

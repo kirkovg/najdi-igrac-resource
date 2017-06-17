@@ -46,6 +46,11 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public Location findLocationByName(String name) {
+        return locationsRepository.findByName(name);
+    }
+
+    @Override
     public List<Location> findAllLocations() {
         return (List)locationsRepository.findAll();
     }
