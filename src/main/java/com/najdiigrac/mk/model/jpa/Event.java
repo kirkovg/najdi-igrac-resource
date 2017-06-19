@@ -72,16 +72,4 @@ public class Event extends BaseEntity {
     @Boost(0.5f)
     public String description;
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "name='" + name + '\'' +
-                ", dateTime=" + dateTime +
-                ", location=" + location +
-                ", sport=" + sport +
-                ", admin=" + admin +
-                ", participants=" + participants +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

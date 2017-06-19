@@ -31,4 +31,6 @@ public interface UserService {
 
     User findByUserName(String username);
 
+    boolean isFollowing(Long userId, Long followerId);
+
 }

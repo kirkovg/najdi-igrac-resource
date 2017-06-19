@@ -1,3 +1,4 @@
+/*
 package com.najdiigrac.mk.service;
 
 import com.najdiigrac.mk.model.enums.SportType;
@@ -17,9 +18,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+*/
 /**
  * Created by Win 8 on 19.04.2017.
- */
+ *//*
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -103,3 +106,4 @@ public class EventServiceTest {
     }
 
 }
+*/

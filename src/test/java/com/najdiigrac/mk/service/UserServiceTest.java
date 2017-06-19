@@ -1,3 +1,4 @@
+/*
 package com.najdiigrac.mk.service;
 
 import com.najdiigrac.mk.model.enums.SportType;
@@ -16,9 +17,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+*/
 /**
  * Created by Win 8 on 07.05.2017.
- */
+ *//*
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
@@ -71,4 +74,17 @@ public class UserServiceTest {
         Assert.assertEquals(2,foundEvents.size());
     }
 
+
+    @Test
+    public void isFollowing() {
+        User user1 = userService.createUser("jas","nesto",null,null,null);
+        User user2 = userService.createUser("jas2","nesto2",null,null,null);
+
+        userService.addFollower(user1.id,user2.id);
+        boolean isFollowing = userService.isFollowing(user1.id,user2.id);
+
+        Assert.assertEquals(true,isFollowing);
+    }
+
 }
+*/

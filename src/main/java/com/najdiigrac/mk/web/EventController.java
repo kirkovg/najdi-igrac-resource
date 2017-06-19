@@ -2,12 +2,10 @@ package com.najdiigrac.mk.web;
 
 import com.najdiigrac.mk.model.enums.SportType;
 import com.najdiigrac.mk.model.jpa.Event;
+import com.najdiigrac.mk.model.jpa.Location;
 import com.najdiigrac.mk.model.jpa.ParticipateRequest;
 import com.najdiigrac.mk.model.jpa.User;
-import com.najdiigrac.mk.service.EventService;
-import com.najdiigrac.mk.service.LocationService;
-import com.najdiigrac.mk.service.ParticipateRequestService;
-import com.najdiigrac.mk.service.UserService;
+import com.najdiigrac.mk.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,16 +25,19 @@ public class EventController {
     private UserService userService;
     private LocationService locationService;
     private ParticipateRequestService participateRequestService;
+    private InviteRequestService inviteRequestService;
 
     @Autowired
     public EventController(EventService eventService,
                            UserService userService,
                            LocationService locationService,
-                           ParticipateRequestService participateRequestService) {
+                           ParticipateRequestService participateRequestService,
+                           InviteRequestService inviteRequestService) {
         this.eventService = eventService;
         this.userService = userService;
         this.participateRequestService = participateRequestService;
         this.locationService = locationService;
+        this.inviteRequestService = inviteRequestService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -77,22 +78,37 @@ public class EventController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
-    public Event save(@RequestBody Event event) {
+    public Event save(@RequestBody Event event,@RequestParam boolean sendInvites) {
 
-        event.location = locationService.findLocationByName(event.location.name);
+        Location location = locationService.findLocationByName(event.location.name);
+
+        if (location == null) {
+
+            event.location = locationService.createLocation(event.location.name,
+                    event.location.city,
+                    event.location.street, event.location.streetNumber);
+        }
+        else
+            event.location = location;
+
         event.admin = userService.findByUserName(event.admin.userName);
+
+
         return eventService.createEvent(
                 event.admin.id,
                 event.name,
                 event.description,
                 event.sport,
                 event.location.id,
-                event.dateTime
+                event.dateTime,
+                sendInvites
         );
     }
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long eventId) {
+        participateRequestService.cascadeDelete(eventId);
+        inviteRequestService.cascadeDelete(eventId);
         eventService.removeEvent(eventId);
     }
 
@@ -133,5 +149,29 @@ public class EventController {
     @RequestMapping(value = "/{eventId}", method = RequestMethod.GET)
     public Event findById(@PathVariable Long eventId) {
         return eventService.findById(eventId);
+    }
+
+    @RequestMapping(value = "/myEvents", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Event> findMyEvents(@RequestParam int pageNr) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentAuthenticatedUser = userService.findByUserName(userDetails.getUsername());
+        return eventService.findByAdminId(currentAuthenticatedUser.id, pageNr);
+    }
+
+    @RequestMapping(value = "/myEvents/count", method = RequestMethod.GET)
+    public Long countMyEvents() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentAuthenticatedUser = userService.findByUserName(userDetails.getUsername());
+        return eventService.countByAdminId(currentAuthenticatedUser.id);
+    }
+
+    @RequestMapping(value = "/participate/{eventId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void cancelParticipateRequest(@PathVariable Long eventId) {
+        //get the current authenticated user
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentAuthenticatedUser = userService.findByUserName(userDetails.getUsername());
+        participateRequestService.cancelRequest(currentAuthenticatedUser.id, eventId);
     }
 }

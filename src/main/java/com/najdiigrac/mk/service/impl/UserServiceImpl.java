@@ -132,7 +132,22 @@ public class UserServiceImpl implements UserService {
         return usersRepository.save(user);
     }
 
+    @Override
+    public boolean isFollowing(Long userId, Long followerId) {
+        User user = usersRepository.findOne(userId);
+        User follower = usersRepository.findOne(followerId);
+
+        List<User> followersOfUser = user.followers;
+        List<User> followingListOfFollower = follower.following;
+
+        if (followersOfUser.contains(follower) && followingListOfFollower.contains(user)) {
+            return true;
+        }
+        return false;
+    }
+
     private String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }
+
 }

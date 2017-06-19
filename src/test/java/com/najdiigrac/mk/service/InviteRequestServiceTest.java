@@ -1,3 +1,4 @@
+/*
 package com.najdiigrac.mk.service;
 
 import com.najdiigrac.mk.model.enums.SportType;
@@ -17,9 +18,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+*/
 /**
  * Created by bogda on 19.5.2017.
- */
+ *//*
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
@@ -66,3 +69,4 @@ public class InviteRequestServiceTest {
     }
 
 }
+*/

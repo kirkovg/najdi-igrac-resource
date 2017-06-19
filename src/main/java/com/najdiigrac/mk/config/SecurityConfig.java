@@ -67,7 +67,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(
                         "/api/users/**",
-                        "/api/locations/**"
+                        "/api/locations/**",
+                        "/api/participateRequests/**",
+                        "/api/inviteRequests/**"
                 )
                 .authenticated();
 

@@ -8,6 +8,8 @@ import com.najdiigrac.mk.persistence.EventsRepository;
 import com.najdiigrac.mk.persistence.LocationsRepository;
 import com.najdiigrac.mk.persistence.UsersRepository;
 import com.najdiigrac.mk.service.EventService;
+import com.najdiigrac.mk.service.InviteRequestService;
+import com.najdiigrac.mk.service.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,8 @@ public class EventServiceImpl implements EventService {
     private EventsRepository eventsRepository;
     private UsersRepository usersRepository;
     private LocationsRepository locationsRepository;
+    private UserService userService;
+    private InviteRequestService inviteRequestService;
 
 
     static Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
@@ -34,16 +38,25 @@ public class EventServiceImpl implements EventService {
     private EventServiceImpl(
             EventsRepository eventsRepository,
             UsersRepository usersRepository,
-            LocationsRepository locationsRepository
+            LocationsRepository locationsRepository,
+            UserService userService,
+            InviteRequestService inviteRequestService
+
     ) {
         this.eventsRepository = eventsRepository;
         this.usersRepository = usersRepository;
         this.locationsRepository = locationsRepository;
+        this.userService = userService;
+        this.inviteRequestService = inviteRequestService;
 
     }
 
     @Override
-    public Event createEvent(Long newAdminId, String name, String description, SportType sport, Long locationId, LocalDateTime dateTime) {
+    public Event createEvent(Long newAdminId, String name,
+                             String description, SportType sport,
+                             Long locationId,
+                             LocalDateTime dateTime,
+                             boolean sendRequests) {
 
         Event event = new Event();
 
@@ -53,8 +66,15 @@ public class EventServiceImpl implements EventService {
         event.sport = sport;
         event.location = locationsRepository.findOne(locationId);
         event.dateTime = dateTime;
+        Event myEvent = eventsRepository.save(event);
 
-        return eventsRepository.save(event);
+        if(sendRequests){
+            List<User> followers = userService.findUserFollowers(event.admin.id);
+            for(User user : followers){
+                inviteRequestService.inviteFriend(event.admin.id,user.id,event.id);
+            }
+        }
+        return myEvent;
     }
 
     @Override
@@ -120,12 +140,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> findUpcomingEvents(int pageNr) {
-        return eventsRepository.findAllByOrderByDateTimeDesc(new PageRequest(pageNr,2)).getContent();
+        return eventsRepository.findAllByOrderByDateTimeDesc(new PageRequest(pageNr,7)).getContent();
     }
 
     @Override
     public List<Event> findEventsBySport(SportType sport,int pageNr) {
-        return eventsRepository.findBySportOrderByDateTimeDesc(sport,new PageRequest(pageNr,2)).getContent();
+        return eventsRepository.findBySportOrderByDateTimeDesc(sport,new PageRequest(pageNr,7)).getContent();
     }
 
     @Override
@@ -136,5 +156,15 @@ public class EventServiceImpl implements EventService {
     @Override
     public Long countBySport(SportType sport) {
         return eventsRepository.countBySport(sport);
+    }
+
+    @Override
+    public Long countByAdminId(Long adminId) {
+        return eventsRepository.countByAdminId(adminId);
+    }
+
+    @Override
+    public List<Event> findByAdminId(Long adminId, int pageNr) {
+        return eventsRepository.findByAdminId(adminId, new PageRequest(pageNr, 7)).getContent();
     }
 }

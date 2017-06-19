@@ -14,4 +14,11 @@ public interface InviteRequestService {
     List<InviteRequest> getRequestsForUser(Long userId);
 
     void removeRequest(Long requestId);
+
+    void acceptInvite(Long inviteId, Long userId);
+
+    void rejectInvite(Long inviteId, Long userId);
+
+    void cascadeDelete(Long eventId);
+
 }

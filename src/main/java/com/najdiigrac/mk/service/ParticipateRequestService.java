@@ -17,4 +17,18 @@ public interface ParticipateRequestService {
     void removeRequest(Long requestId);
 
     List<ParticipateRequest> getRequestsSentByUser(Long userId);
+
+    List<ParticipateRequest> getRequestsForAdminOfEvent(Long userId);
+
+    ParticipateRequest findRequestBy(Long eventId, Long userId);
+
+    void cancelRequest(Long userId,Long eventId);
+
+    void removeRequests(List<ParticipateRequest> requests);
+
+    void cascadeDelete(Long eventId);
+
+    void acceptParticipatingRequest(Long requestId);
+
+    void rejectParticipatingRequest(Long requestId);
 }

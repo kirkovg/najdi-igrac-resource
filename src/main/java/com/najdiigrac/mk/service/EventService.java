@@ -18,7 +18,8 @@ public interface EventService {
             String description,
             SportType sport,
             Long locationId,
-            LocalDateTime dateTime
+            LocalDateTime dateTime,
+            boolean sendInvites
     );
 
     void removeEvent(Long eventId);
@@ -53,4 +54,8 @@ public interface EventService {
     Long count();
 
     Long countBySport(SportType sport);
+
+    Long countByAdminId(Long adminId);
+
+    List<Event> findByAdminId(Long adminId, int pageNr);
 }

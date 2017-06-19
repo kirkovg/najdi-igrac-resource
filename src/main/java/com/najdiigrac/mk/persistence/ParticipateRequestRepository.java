@@ -12,4 +12,8 @@ public interface ParticipateRequestRepository extends CrudRepository<Participate
     List<ParticipateRequest> findByEventId(Long eventId);
 
     List<ParticipateRequest> findByFromId(Long fromId);
+
+    List<ParticipateRequest> findByEventAdminIdOrderByDateTimeDesc(Long adminId);
+
+    List<ParticipateRequest> findByEventIdAndFromId(Long eventId, Long fromId);
 }

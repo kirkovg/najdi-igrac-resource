@@ -1,14 +1,14 @@
 package com.najdiigrac.mk.service.impl;
 
-/*import com.najdiigrac.mk.events.InviteRequestEvent;*/
+
+import com.najdiigrac.mk.model.jpa.Event;
 import com.najdiigrac.mk.model.jpa.InviteRequest;
+import com.najdiigrac.mk.model.jpa.User;
 import com.najdiigrac.mk.persistence.EventsRepository;
 import com.najdiigrac.mk.persistence.InviteRequestRepository;
 import com.najdiigrac.mk.persistence.UsersRepository;
 import com.najdiigrac.mk.service.InviteRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,25 +25,21 @@ public class InviteRequestServiceImpl implements InviteRequestService {
 
     private UsersRepository usersRepository;
 
-/*
-    private ApplicationEventPublisher publisher;*/
 
     @Autowired
     public InviteRequestServiceImpl(
             InviteRequestRepository inviteRequestRepository,
-            /*ApplicationEventPublisher publisher,*/
             UsersRepository usersRepository,
-            EventsRepository eventsRepository){
+            EventsRepository eventsRepository) {
         this.inviteRequestRepository = inviteRequestRepository;
         this.eventsRepository = eventsRepository;
         this.usersRepository = usersRepository;
-        /*this.publisher = publisher;*/
 
     }
 
 
     @Override
-    public InviteRequest inviteFriend(Long fromFriendId,Long toFriendId, Long eventId) {
+    public InviteRequest inviteFriend(Long fromFriendId, Long toFriendId, Long eventId) {
         InviteRequest inviteRequest = new InviteRequest();
         inviteRequest.event = eventsRepository.findOne(eventId);
         inviteRequest.to = usersRepository.findOne(toFriendId);
@@ -58,13 +54,35 @@ public class InviteRequestServiceImpl implements InviteRequestService {
 
     @Override
     public List<InviteRequest> getRequestsForUser(Long userId) {
-        return (List<InviteRequest>) inviteRequestRepository.findByToId(userId);
+        return (List<InviteRequest>) inviteRequestRepository.findByToIdOrderByDateTimeDesc(userId);
     }
 
     @Override
     public void removeRequest(Long requestId) {
-         inviteRequestRepository.delete(requestId);
+        inviteRequestRepository.delete(requestId);
     }
 
+    @Override
+    public void acceptInvite(Long inviteId, Long userId) {
+        InviteRequest inviteRequest = inviteRequestRepository.findOne(inviteId);
+        Event event = eventsRepository.findOne(inviteRequest.event.id);
+        User user = usersRepository.findOne(userId);
+
+        event.participants.add(user);
+        inviteRequestRepository.delete(inviteRequest);
+        eventsRepository.save(event);
+    }
+
+    @Override
+    public void rejectInvite(Long inviteId, Long userId) {
+        InviteRequest inviteRequest = inviteRequestRepository.findByIdAndToId(inviteId,userId);
+        inviteRequestRepository.delete(inviteRequest);
+    }
+
+    @Override
+    public void cascadeDelete(Long eventId) {
+        List<InviteRequest> inviteRequests = inviteRequestRepository.findByEventId(eventId);
+        inviteRequestRepository.delete(inviteRequests);
+    }
 
 }

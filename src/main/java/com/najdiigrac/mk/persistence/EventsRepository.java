@@ -22,4 +22,8 @@ public interface EventsRepository extends CrudRepository<Event, Long> {
     long count();
 
     Long countBySport(SportType sport);
+
+    Page<Event> findByAdminId(Long adminId,Pageable pageable);
+
+    Long countByAdminId(Long adminId);
 }
