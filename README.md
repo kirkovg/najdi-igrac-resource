@@ -1,5 +1,6 @@
 ## Најди игрaч апликација
 Проект по предметот Веб Програмирање 2016/17
+Клиентскиот дел од апликацијата можете да го најдете [овде](https://github.com/kirkovg/najdi-igrac-client)
 
 ## Автори
 * [Ѓорѓи Кирков](https://github.com/kirkovg)
@@ -8,7 +9,8 @@
 * Никола Кировски
 
 ## Технологии
-* Spring boot
+* Spring Boot
 * MySQL
 * Hibernate
+* Spring Security
 * Spring MVC
